@@ -12,7 +12,6 @@ class Contenedor{
             obj = {...obj, id: 1};
             if(data != `` && data != `[]`){
                 data.push(obj);
-                console.log(data);
                 await fs.promises.writeFile(this.fileName, JSON.stringify(data));
             } else {
                 let array = [];
@@ -27,7 +26,7 @@ class Contenedor{
 
     async getByID(id){
         try {
-            const contenido = await fs.promises.readFile(this.fileName, `utf-8`);
+            let contenido = await fs.promises.readFile(this.fileName, `utf-8`);
             let array = JSON.parse(contenido);
             if(array.find((element) => {element.id == id}) !== undefined){
                 console.log(array.find((element) => {element.id == id}));
@@ -42,7 +41,7 @@ class Contenedor{
 
     async getAll(){
         try {
-            const contenido = await fs.promises.readFile(this.fileName, `utf-8`)
+            let contenido = await fs.promises.readFile(this.fileName, `utf-8`)
             console.log(`${JSON.parse(contenido)} - getAll`);
         }
         catch (error){
@@ -50,7 +49,17 @@ class Contenedor{
         }
     }
 
-    deleteByID(id){
+    async deleteByID(id){
+        try{
+            let contenido = await fs.promises.readFile(this.fileName, `utf-8`)
+            let data = JSON.parse(contenido);
+            let filtrado = data.filter((el) => el.id !== id);
+            await fs.promises.writeFile(this.fileName, filtrado);
+            console.log(`El item con id ${id} ha sido eliminado.`);
+        }
+        catch (error){
+            console.log(`Hubo un error: ${error}`);
+        }
 
     }
 
@@ -67,23 +76,15 @@ class Contenedor{
 
 let container = new Contenedor("./cont.txt");
 
-container.save({titulo: `nombre`, price: 1, thumbnail: `link`});
-container.save({titulo: `nombre2`, price: 2, thumbnail: `link2`});
+async function main(){
+    await container.save({titulo: `nombre`, price: 1, thumbnail: `link`});
+    await container.save({titulo: `nombre2`, price: 2, thumbnail: `link2`});
+    await container.save({titulo: "nombre3", price: 3, thumbnail: "link3"});
+    await container.getAll();
+    await container.getByID(1);
+    setTimeout(() => {
+        container.deleteAll();
+    }, 6000)
+}
 
-container.getByID(1);
-
-//  setTimeout(() => {
-//      container.deleteAll();
-//  }, 2000);
-
-
-
-
-
-// container.save({titulo: "nombre3", price: 3, thumbnail: "link3"});
-
-// container.getAll();
-
-// container.deleteAll();
-
-// container.getAll();
+main();
