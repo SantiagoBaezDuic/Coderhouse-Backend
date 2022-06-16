@@ -1,0 +1,23 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta http-equiv="X-UA-Compatible" content="IE=edge">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>API RESTful Server</title>
+</head>
+<body>
+    <h1>API RESTful</h1>
+    <h2>Add product</h2>
+    <form method="post" action="/api/productos">
+        <label>Name: <input type="text" name="title"></label>
+        <label>Price: <input type="text" name="price"></label>
+        <label>Thumbnail: <input type="text" name="thumbnail"></label>
+        <button type="submit">Enviar</button>
+    </form>
+    <h2>Get all products</h2>
+    <form method="get" action="/api/productos">
+        <button type="submit">Submit</button>
+    </form>
+</body>
+</html>
