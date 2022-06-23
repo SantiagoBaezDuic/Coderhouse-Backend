@@ -1,0 +1,13 @@
+extends main.pug 
+
+block viewerBlock 
+    h1 Listado de productos 
+    div
+        if productsArray 
+            div 
+                each obj in productsArray 
+                    h3= obj.name
+                    h4 $ #{obj.price}
+                    h4= obj.thumbnail
+        else
+            div No se encontraron productos.
